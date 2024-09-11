@@ -1,0 +1,50 @@
+<h1>Halaman edit contact</h1>
+
+<% if (typeof errors !== 'undefined') { %>
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            <% errors.forEach(error => { %>        
+                <li>
+                    <%- error.msg  %>
+                </li>
+            <% }) %>
+            <h2>Masukan ulang data anda!</h2>
+        </ul>
+    </div>
+<% } %>
+
+<form method="POST" action="/contact?_method=PUT">
+    <div class="mb-3">
+        <input type="hidden" name="_id" value="<%= contact._id %>">
+        <input type="hidden" name="oldNama" value="<%= (contact.oldNama )? contact.oldNama : contact.nama %>">
+        <label for="nama" class="form-label">Nama</label>
+        <input
+            type="text"
+            class="form-control"
+            id="nama"
+            name="nama"
+            required
+            value="<%= contact.nama %>" />
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+            value="<%= contact.email %>" />
+    </div>
+    <div class="mb-3">
+        <label for="noHp" class="form-label">No Hp</label>
+        <input
+            type="text"
+            class="form-control"
+            id="noHp"
+            name="no_Hp"
+            required
+            value="<%= contact.no_Hp %>" />
+    </div>
+    <button type="submit" class="btn btn-primary">Ubah data contact</button>
+</form>
