@@ -5,7 +5,9 @@ const app = express();
 require("./utils/db");
 const Contact = require("./model/contact");
 
-var methodOverride = require('method-override')
+const methodOverride = require('method-override')
+
+app.use(methodOverride('_method'))
 
 // set ejs
 const expresLayout = require("express-ejs-layouts");
@@ -99,16 +101,10 @@ app.get("/contact/add", (req, res) => {
     });
 });
 
-app.get("/contact/delete/:nama", async (req, res) => {
-    const deleteBynama = await Contact.deleteOne({ nama: req.params.nama });
-    console.log(deleteBynama);
-    if (deleteBynama.deletedCount < 1) {
-        res.status(404);
-        res.send("<h1> Not Found </h1>");
-    } else {
-        req.flash("msg", "Data berhasil dihapus");
-        res.redirect("/contact");
-    }
+app.delete("/contact", async (req, res) => {
+    await Contact.deleteOne({ nama: req.body.nama });
+    req.flash("msg", "Data berhasil dihapus");
+    res.redirect("/contact")
 });
 
 app.get("/contact/edit/:nama", async (req, res) => {
@@ -125,7 +121,7 @@ app.get("/contact/edit/:nama", async (req, res) => {
 
 app.put("/contact",[
     check("email", "Email yang anda masukan salah").isEmail(),
-    check("noHp", "Nomor yang anda masukan salah").isMobilePhone("id-ID"),
+    check("no_Hp", "Nomor yang anda masukan salah").isMobilePhone("id-ID"),
     body("nama").custom( async (value, { req }) => {
         const duplikasi = await Contact.findOne({ nama: value });
         if (value !== req.body.oldNama && duplikasi) {
@@ -155,7 +151,7 @@ app.put("/contact",[
                     }
                 }
             ).then((result) => { 
-                req.flash("msg", "Data berhasil ditambahkan");
+                req.flash("msg", "Data berhasil diubah");
                 res.redirect("/contact");
             });
         }

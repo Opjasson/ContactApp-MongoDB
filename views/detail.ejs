@@ -12,8 +12,14 @@
                       <h5 class="card-title"><%- contact.nama %></h5>
                       <h6 class="card-subtitle mb-2 text-body-secondary"><%- contact.no_Hp %></h6>
                       <p class="card-text"><%- contact.email %></p>
-                      <a href="/contact/delete/<%= contact.nama %>" class="btn btn-danger badge" onclick="return confirm('Ingin hapus ini?')">Delete</a>
-                      <a href="/contact/edit/<%= contact.nama %>" class="btn btn-info badge">Update</a>
+                      <form action="/contact?_method=DELETE" method="post">
+                          <input type="hidden" class="form-control"
+                          id="nama"
+                          name="nama"
+                          value="<%= contact.nama %>" />
+                          <button type="submit" class="btn btn-danger badge" onclick="return confirm('Ingin hapus ini?')">Delete</button>
+                          <a href="/contact/edit/<%= contact.nama %>" class="btn btn-info badge">Update</a>
+                      </form>
                         <br>
                       <a href="/contact" class="card-link">&laquo;Kembali ke daftar contact</a>
                     </div>
